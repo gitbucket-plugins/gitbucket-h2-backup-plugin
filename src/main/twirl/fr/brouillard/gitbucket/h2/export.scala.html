@@ -1,0 +1,28 @@
+@(info: Option[Any])(implicit context: gitbucket.core.controller.Context)
+@import context._
+@import gitbucket.core.html.main
+@import gitbucket.core.admin.html.menu
+@import gitbucket.core.helper.html.information
+@import gitbucket.core.view.helpers._
+@import gitbucket.core.util.Directory._
+@main("H2 Backup"){
+@menu("h2backup"){
+@information(info)
+<form action="@path/database/backup" method="POST">
+    <div class="box">
+        <div class="box-header">Database export</div>
+        <div class="box-content">
+            <label><span class="strong">Database export file:</span>@GitBucketHome/gitbucket-database-backup.zip</label>
+            <p class="muted">
+                Allows to export the database content. The same action can be achieved via an HTTP GET call to @path/database/backup
+            </p>
+
+            <fieldset>
+                <input type="submit" class="btn btn-primary" value="Export database"/>
+            </fieldset>
+        </div>
+    </div>
+</form>
+}
+}
+
