@@ -4,13 +4,14 @@ import java.io.File
 
 import gitbucket.core.controller.ControllerBase
 import gitbucket.core.servlet.Database
+import gitbucket.core.util.AdminAuthenticator
 import gitbucket.core.util.Directory._
 import fr.brouillard.gitbucket.h2._
 import org.scalatra.Ok
 import org.slf4j.LoggerFactory
 import jp.sf.amateras.scalatra.forms._
 
-class H2BackupController extends ControllerBase {
+class H2BackupController extends ControllerBase with AdminAuthenticator {
   private val logger = LoggerFactory.getLogger(classOf[H2BackupController])
 
   case class BackupForm(destFile: String)
@@ -35,9 +36,9 @@ class H2BackupController extends ControllerBase {
     exportDatabase(exportFile);
   }
 
-  get("/admin/h2backup") {
+  get("/admin/h2backup") (adminOnly {
     html.export(flash.get("info"), flash.get("dest").orElse(Some(defaultBackupFile)));
-  }
+  })
 
   get("/database/backup") {
     val filePath:String = params.getOrElse("dest", defaultBackupFile)
