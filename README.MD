@@ -17,7 +17,25 @@ The plugin provides 2 ways to backup the H2 database:
 - via an administration page and a backup button
 - via an HTTP call to http://YOUR_GITBUCKET/database/backup
 
-In current version database backup file is written to `GITBUCKET_HOME/.gitbucket/gitbucket-database-backup.zip`.
+Default backup file points to `GITBUCKET_DATA/gitbucket-database-backup.zip` where _GITBUCKET_DATA_ is on a standard gitbucket installation `~/.gitbucket`
+
+### UI usage
+
+- goto the `System Administration` menu, section `H2 Backup`
+- modify the file path if the default one doesn't fit your needs
+- hit the `Export database` button
+
+![backup ui](https://cloud.githubusercontent.com/assets/1119660/9659908/3d0afcd4-5253-11e5-8124-39f8a538f6c3.png)
+
+### HTTP call usage
+
+Using your prefered tool (curl, wget, ...) it is possible fire a backup of the H2 database.
+
+The URL to call looks like `http://YOUR_GITBUCKET/database/backup`.
+
+You can pass an optional argument `dest` that references the destination file path where the backup will be done on the server. For example calling `http://YOUR_GITBUCKET/database/backup?dest=/var/backups/gitbucket.zip` will do an H2 backup of the gitbucket database into the file `/var/backups/gitbucket.zip`.
+
+On success, you will receive a `HTTP 200` answer with a body containing the word `done`.
 
 ## Release Notes
 
