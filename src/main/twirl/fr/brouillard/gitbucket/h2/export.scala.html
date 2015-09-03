@@ -1,4 +1,4 @@
-@(info: Option[Any])(implicit context: gitbucket.core.controller.Context)
+@(info: Option[Any], dest: Option[Any])(implicit context: gitbucket.core.controller.Context)
 @import context._
 @import gitbucket.core.html.main
 @import gitbucket.core.admin.html.menu
@@ -10,14 +10,14 @@
 @information(info)
 <form action="@path/database/backup" method="POST">
     <div class="box">
-        <div class="box-header">Database export</div>
+        <div class="box-header">Database backup</div>
         <div class="box-content">
             <fieldset>
-                <label><span class="strong">Database export file:</span></label>
+                <label><span class="strong">Database backup file:</span></label>
                 <p class="muted">
-                    Allows to export the database content. The same action can be achieved via an HTTP GET call to @path/database/backup
+                    Allows to export/backup the database content. The same action can be achieved via an HTTP GET call to @path/database/backup
                 </p>
-                <input type="text" name="dest" value="@GitBucketHome/gitbucket-database-backup.zip" style="width: 400px" />
+                <input type="text" name="dest" value="@dest" style="width: 400px" />
             </fieldset>
 
         </div>

@@ -19,6 +19,8 @@ class H2BackupController extends ControllerBase {
     "dest" -> trim(label("Destination", text(required)))
   )(BackupForm.apply)
 
+  private val defaultBackupFile:String = new File(GitBucketHome, "gitbucket-database-backup.zip").toString;
+
   def exportDatabase(exportFile: File): Unit = {
     val session = Database.getSession(request)
     val conn = session.conn
@@ -34,11 +36,11 @@ class H2BackupController extends ControllerBase {
   }
 
   get("/admin/h2backup") {
-    html.export(flash.get("info"));
+    html.export(flash.get("info"), flash.get("dest").orElse(Some(defaultBackupFile)));
   }
 
   get("/database/backup") {
-    val filePath:String = params.getOrElse("dest", new File(GitBucketHome, "gitbucket-database-backup.zip").toString)
+    val filePath:String = params.getOrElse("dest", defaultBackupFile)
     exportDatabase(new File(filePath))
     Ok("done")
   }
@@ -46,6 +48,7 @@ class H2BackupController extends ControllerBase {
   post("/database/backup", backupForm) { form: BackupForm =>
     exportDatabase(new File(form.destFile))
     flash += "info" -> "H2 Database has been exported."
+    flash += "dest" -> form.destFile
     redirect("/admin/h2backup")
   }
 }
