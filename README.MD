@@ -37,6 +37,17 @@ You can pass an optional argument `dest` that references the destination file pa
 
 On success, you will receive a `HTTP 200` answer with a body containing the word `done`.
 
+## Compatibility
+
+Plugin version | GitBucket version
+:--------------|:-----------------
+1.0.x          | 3.6.x, 3.7.x, 3.8.x
+
+## Installation
+
+- copy gitbucket-announce-plugin.jar into GITBUCKET_HOME/plugins
+- restart gitbucket
+
 ## Release Notes
 
 ### 1.0
