@@ -9,7 +9,7 @@ import gitbucket.core.util.Directory._
 import fr.brouillard.gitbucket.h2._
 import org.scalatra.Ok
 import org.slf4j.LoggerFactory
-import jp.sf.amateras.scalatra.forms._
+import io.github.gitbucket.scalatra.forms._
 
 class H2BackupController extends ControllerBase with AdminAuthenticator {
   private val logger = LoggerFactory.getLogger(classOf[H2BackupController])

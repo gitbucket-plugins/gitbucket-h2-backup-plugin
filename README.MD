@@ -41,7 +41,14 @@ On success, you will receive a `HTTP 200` answer with a body containing the word
 
 Plugin version | GitBucket version
 :--------------|:-----------------
-1.0.x          | 3.6.x, 3.7.x, 3.8.x
+1.1.x          | 3.11.x
+1.0.x          | 3.6.x, 3.7.x, 3.8.x,, 3.9.x, 3.10.x
+
+## Build
+
+```
+sbt clean package
+```
 
 ## Installation
 
@@ -49,6 +56,10 @@ Plugin version | GitBucket version
 - restart gitbucket
 
 ## Release Notes
+
+### 1.1
+
+- recompilation to ensure binary compatibility with gitbucket 3.11
 
 ### 1.0
 
