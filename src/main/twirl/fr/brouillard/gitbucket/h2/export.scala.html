@@ -9,9 +9,9 @@
 @menu("h2backup"){
 @information(info)
 <form action="@path/database/backup" method="POST">
-    <div class="box">
-        <div class="box-header">Database backup</div>
-        <div class="box-content">
+    <div class="panel panel-default">
+        <div class="panel-heading strong">Database backup</div>
+        <div class="panel-body">
             <fieldset>
                 <label><span class="strong">Database backup file:</span></label>
                 <p class="muted">
@@ -19,7 +19,6 @@
                 </p>
                 <input type="text" name="dest" value="@dest" style="width: 400px" />
             </fieldset>
-
         </div>
     </div>
     <div class="align-right" style="margin-top: 20px;">
