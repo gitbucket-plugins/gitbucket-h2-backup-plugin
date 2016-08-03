@@ -21,14 +21,11 @@ object MyBuild extends Build {
       version := Version,
     scalaVersion := ScalaVersion,
     scalacOptions := Seq("-deprecation", "-language:postfixOps"),
-    resolvers ++= Seq(
-      "amateras-repo" at "http://amateras.sourceforge.jp/mvn/"
-    ),
     libraryDependencies ++= Seq(
-      "gitbucket"          % "gitbucket-assembly" % "4.0.0" % "provided",
-      "io.github.gitbucket" % "solidbase" % "1.0.0" % "provided",
-      "com.typesafe.play" %% "twirl-compiler"     % "1.0.4" % "provided",
-      "javax.servlet"      % "javax.servlet-api"  % "3.1.0" % "provided"
+      "io.github.gitbucket" %% "gitbucket"         % "4.3.0" % "provided",
+      "io.github.gitbucket"  % "solidbase"         % "1.0.0" % "provided",
+      "com.typesafe.play"   %% "twirl-compiler"    % "1.0.4" % "provided",
+      "javax.servlet"        % "javax.servlet-api" % "3.1.0" % "provided"
     ),
     javacOptions in compile ++= Seq("-target", "7", "-source", "7")
   ).enablePlugins(SbtTwirl)
