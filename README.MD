@@ -17,7 +17,10 @@ The plugin provides 2 ways to backup the H2 database:
 - via an administration page and a backup button
 - via an HTTP call to http://YOUR_GITBUCKET/database/backup
 
-Default backup file points to `GITBUCKET_DATA/gitbucket-database-backup.zip` where _GITBUCKET_DATA_ is on a standard gitbucket installation `~/.gitbucket`
+Default backup file points to `GITBUCKET_DATA/gitbucket-database-backup-YYYY-MM-DD-hhmm.zip` where:
+
+- _GITBUCKET_DATA_ is on a standard gitbucket installation `~/.gitbucket`
+- _YYYY-MM-DD-hhmm_ represents a date with hour
 
 ### UI usage
 
@@ -29,18 +32,20 @@ Default backup file points to `GITBUCKET_DATA/gitbucket-database-backup.zip` whe
 
 ### HTTP call usage
 
-Using your prefered tool (curl, wget, ...) it is possible fire a backup of the H2 database.
+Using your preferred tool (curl, wget, ...) it is possible fire a backup of the H2 database.
 
 The URL to call looks like `http://YOUR_GITBUCKET/database/backup`.
 
 You can pass an optional argument `dest` that references the destination file path where the backup will be done on the server. For example calling `http://YOUR_GITBUCKET/database/backup?dest=/var/backups/gitbucket.zip` will do an H2 backup of the gitbucket database into the file `/var/backups/gitbucket.zip`.
+Since `1.3.0`, the _dest_ parameter can denote a relative file path, in this case the file will be created relatively to `GITBUCKET_DATA`.
 
-On success, you will receive a `HTTP 200` answer with a body containing the word `done`.
+On success, you will receive a `HTTP 200` answer with a body containing `done: FULL_PATH_OF_BACKUP_FILE`.
 
 ## Compatibility
 
 Plugin version | GitBucket version
 :--------------|:-----------------
+1.3.x          | >= 4.3.y
 1.2.x          | 4.x.y
 1.1.x          | 3.11.x
 1.0.x          | 3.6.x, 3.7.x, 3.8.x,, 3.9.x, 3.10.x
@@ -57,6 +62,12 @@ sbt clean package
 - restart gitbucket
 
 ## Release Notes
+
+### 1.3.0
+
+- compatibility with gitbucket 4.3.0
+- fix version order in gitbucket Plugins panel
+- default backup file contains date with timestamp [#12](https://github.com/gitbucket-plugins/gitbucket-h2-backup-plugin/issues/12)
 
 ### 1.2.0
 
