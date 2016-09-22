@@ -58,7 +58,7 @@ sbt clean package
 
 ## Installation
 
-- copy gitbucket-announce-plugin.jar into GITBUCKET_HOME/plugins
+- copy gitbucket-h2-backup.jar into GITBUCKET_HOME/plugins
 - restart gitbucket
 
 ## Release Notes
