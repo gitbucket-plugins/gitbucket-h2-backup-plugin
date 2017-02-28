@@ -25,5 +25,6 @@ class Plugin extends gitbucket.core.plugin.Plugin {
   override val controllers = Seq(
     "/admin/h2backup" -> new H2BackupController()
     , "/database/backup" -> new H2BackupController()
+    , "/api/v3/plugins/database/backup" -> new H2BackupController()
   )
 }

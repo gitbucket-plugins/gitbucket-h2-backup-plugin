@@ -41,7 +41,22 @@ class H2BackupController extends ControllerBase with AdminAuthenticator {
     html.export(flash.get("info"), flash.get("dest").orElse(Some(defaultBackupFileName())));
   })
 
+  get("/api/v3/plugins/database/backup") {
+    context.loginAccount match {
+      case Some(x) if(x.isAdmin) => doExport()
+      case _ => org.scalatra.Unauthorized()
+    }
+  }
+
   get("/database/backup") {
+    if (sys.props.get("secure.backup") exists (_ equalsIgnoreCase "true"))
+      org.scalatra.TemporaryRedirect("/api/v3/plugins/database/backup?dest=" + params.getOrElse("dest", defaultBackupFileName()))
+    else {
+      doExport()
+    }
+  }
+
+  private def doExport(): Unit = {
     val filePath:String = params.getOrElse("dest", defaultBackupFileName())
     exportDatabase(new File(filePath))
     Ok("done: " + filePath)
