@@ -34,11 +34,11 @@ class H2BackupController extends ControllerBase with AdminAuthenticator {
 
     logger.info("exporting database to {}", destFile)
 
-    conn.prepareStatement("BACKUP TO '" + destFile + "'").execute();
+    conn.prepareStatement("BACKUP TO '" + destFile + "'").execute()
   }
 
   get("/admin/h2backup") (adminOnly {
-    html.export(flash.get("info"), flash.get("dest").orElse(Some(defaultBackupFileName())));
+    html.export(flash.get("info"), flash.get("dest").orElse(Some(defaultBackupFileName())))
   })
 
   get("/api/v3/plugins/database/backup") {
@@ -71,6 +71,6 @@ class H2BackupController extends ControllerBase with AdminAuthenticator {
 
   private def defaultBackupFileName(): String = {
     val format = new java.text.SimpleDateFormat("yyyy-MM-dd-HHmm")
-    "gitbucket-database-backup-" + format.format(new Date())+ ".zip";
+    "gitbucket-database-backup-" + format.format(new Date())+ ".zip"
   }
 }
