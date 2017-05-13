@@ -45,7 +45,7 @@ On success, you will receive a `HTTP 200` answer with a body containing `done: F
 
 Plugin version | GitBucket version
 :--------------|:-----------------
-1.5.x          | >= 4.11.y
+1.5.x          | >= 4.12.y
 1.4.x          | >= 4.10.y
 1.3.x          | >= 4.3.y
 1.2.x          | 4.x.y
@@ -66,7 +66,7 @@ sbt clean package
 ## Release Notes
 
 ### 1.5.0
-- compatibility with gitbucket 4.11.0 and scala 2.12
+- compatibility with gitbucket 4.12.1 and scala 2.12
 
 ### 1.4.0
 
