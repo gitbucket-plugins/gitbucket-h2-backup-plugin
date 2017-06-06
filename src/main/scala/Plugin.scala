@@ -9,13 +9,14 @@ class Plugin extends gitbucket.core.plugin.Plugin {
 
   override val pluginName: String = "H2 Database Backup Plugin"
 
-  override val description: String = "Allows to export h2 database of gitbucket"
+  override val description: String = "Allows to export the H2 database of GitBucket"
 
   override val versions: List[Version] = List(
     new Version("1.0.0"),
     new Version("1.2.0"),
     new Version("1.3.0"),
-    new Version("1.4.0")
+    new Version("1.4.0"),
+    new Version("1.5.0")
   )
 
   override val systemSettingMenus: Seq[(Context) => Option[Link]] = Seq(

@@ -27,18 +27,18 @@ class H2BackupController extends ControllerBase with AdminAuthenticator {
   // private val defaultBackupFile:String = new File(GitBucketHome, "gitbucket-database-backup.zip").toString;
 
   def exportDatabase(exportFile: File): Unit = {
-    val destFile = if (exportFile.isAbsolute()) exportFile else new File(GitBucketHome, exportFile.toString)
+    val destFile = if (exportFile.isAbsolute()) exportFile else new File(GitBucketHome+"/backup", exportFile.toString)
 
     val session = Database.getSession(request)
     val conn = session.conn
 
     logger.info("exporting database to {}", destFile)
 
-    conn.prepareStatement("BACKUP TO '" + destFile + "'").execute();
+    conn.prepareStatement("BACKUP TO '" + destFile + "'").execute()
   }
 
   get("/admin/h2backup") (adminOnly {
-    html.export(flash.get("info"), flash.get("dest").orElse(Some(defaultBackupFileName())));
+    html.export(flash.get("info"), flash.get("dest").orElse(Some(defaultBackupFileName())))
   })
 
   get("/api/v3/plugins/database/backup") {
@@ -64,13 +64,14 @@ class H2BackupController extends ControllerBase with AdminAuthenticator {
 
   post("/database/backup", backupForm) { form: BackupForm =>
     exportDatabase(new File(form.destFile))
-    flash += "info" -> "H2 Database has been exported."
+    val msg:String = "H2 Database has been exported to '"+form.destFile+"'."
+    flash += "info" -> msg
     flash += "dest" -> form.destFile
     redirect("/admin/h2backup")
   }
 
   private def defaultBackupFileName(): String = {
-    val format = new java.text.SimpleDateFormat("yyyy-MM-dd-HHmm")
-    "gitbucket-database-backup-" + format.format(new Date())+ ".zip";
+    val format = new java.text.SimpleDateFormat("yyyy-MM-dd_HH-mm")
+    "gitbucket-db-" + format.format(new Date())+ ".zip"
   }
 }

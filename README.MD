@@ -1,14 +1,14 @@
 # gitbucket-h2-backup-plugin
 
-This plugin enhances [takezoe/gitbucket](https://github.com/takezoe/gitbucket) by offering a way to backup/dump the h2 database of gitbucket.
+This plugin enhances [GitBucket](https://github.com/gitbucket/gitbucket) by offering a way to backup/dump the H2 database of GitBucket.
 
-It originates from [pull request #845](takezoe/gitbucket#845) and can be used to adress database backup described in [gitbucket backup documentation](https://github.com/takezoe/gitbucket/wiki/Backup)
+It originates from [pull request #845](takezoe/gitbucket#845) and can be used to address database backup described in [gitbucket backup documentation](https://github.com/takezoe/gitbucket/wiki/Backup)
 
 ## Features
 
 ### H2 Backup
 
-This plugin allows to backup the underlying H2 database used by default by gitbucket.
+This plugin allows to backup the underlying H2 database used by default by GitBucket.
 
 ## Usage
 
@@ -45,6 +45,7 @@ On success, you will receive a `HTTP 200` answer with a body containing `done: F
 
 Plugin version | GitBucket version
 :--------------|:-----------------
+1.5.x          | >= 4.12.y
 1.4.x          | >= 4.10.y
 1.3.x          | >= 4.3.y
 1.2.x          | 4.x.y
@@ -63,6 +64,9 @@ sbt clean package
 - restart gitbucket
 
 ## Release Notes
+
+### 1.5.0
+- compatibility with gitbucket 4.12.1 and scala 2.12
 
 ### 1.4.0
 
@@ -94,7 +98,7 @@ sbt clean package
 In version 1.4.0, it is possible to secure the `database/backup` endpoint:
 
 - launch gitbucket with System property _secure.backup_ set to true (for example `-Dsecure.backup=true` on the command line)
-- due to actual limitations of gibucket & plugins security, once the previous setting is activated, 
+- due to actual limitations of gitbucket & plugins security, once the previous setting is activated, 
 a call to `http://YOUR_GITBUCKET/database/backup` will be temporary redirected `http://YOUR_GITBUCKET/api/v3/plugins/database/backup`. 
 You have to follow this temporary redirection.
    - if you call the endpoint using _httpie_, use the `--follow` parameter

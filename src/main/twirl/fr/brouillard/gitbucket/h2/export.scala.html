@@ -10,14 +10,14 @@
 @information(info)
 <form action="@path/database/backup" method="POST">
     <div class="panel panel-default">
-        <div class="panel-heading strong">Database backup</div>
+        <div class="panel-heading strong">H2 Database Backup</div>
         <div class="panel-body">
             <fieldset>
-                <label><span class="strong">Database backup file:</span></label>
+                <label><span class="strong">H2 Database Backup File:</span></label>
                 <p class="muted">
-                    Allows to export/backup the database content. The same action can be achieved via an HTTP GET call to @path/database/backup
+                    Allows to export/backup the H2 database content. The same action can be achieved via an HTTP GET call to @path/database/backup .
                 </p>
-                <input type="text" name="dest" value="@dest" style="width: 400px" />
+                backup/<input type="text" name="dest" value="@dest" style="width: 400px" />
             </fieldset>
         </div>
     </div>
