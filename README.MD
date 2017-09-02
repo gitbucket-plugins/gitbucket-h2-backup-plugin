@@ -17,10 +17,10 @@ The plugin provides 2 ways to backup the H2 database:
 - via an administration page and a backup button
 - via an HTTP call to http://YOUR_GITBUCKET/database/backup
 
-Default backup file points to `GITBUCKET_DATA/gitbucket-database-backup-YYYY-MM-DD-hhmm.zip` where:
+The default backup file points to `GITBUCKET_DATA/backup/gitbucket-db-YYYY-MM-DD-hhmm.zip` where:
 
-- _GITBUCKET_DATA_ is on a standard gitbucket installation `~/.gitbucket`
-- _YYYY-MM-DD-hhmm_ represents a date with hour
+- _GITBUCKET_DATA_ is the standard GitBucket data directory. If not specified, default it's `~/.gitbucket`
+- _YYYY-MM-DD-hhmm_ represents a date with hour and minutes
 
 ### UI usage
 
@@ -32,7 +32,7 @@ Default backup file points to `GITBUCKET_DATA/gitbucket-database-backup-YYYY-MM-
 
 ### HTTP call usage
 
-Using your preferred tool (curl, wget, ...) it is possible fire a backup of the H2 database.
+Using your preferred tool (curl, wget, ...) it is possible start a backup of the H2 database.
 
 The URL to call looks like `http://YOUR_GITBUCKET/database/backup`.
 
@@ -45,7 +45,7 @@ On success, you will receive a `HTTP 200` answer with a body containing `done: F
 
 Plugin version | GitBucket version
 :--------------|:-----------------
-1.5.x          | >= 4.12.y
+1.5.x          | >= 4.16.y
 1.4.x          | >= 4.10.y
 1.3.x          | >= 4.3.y
 1.2.x          | 4.x.y
@@ -66,7 +66,7 @@ sbt clean package
 ## Release Notes
 
 ### 1.5.0
-- compatibility with gitbucket 4.12.1 and scala 2.12
+- compatibility with gitbucket 4.16.0 and scala 2.12
 
 ### 1.4.0
 
