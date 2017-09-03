@@ -1,6 +1,6 @@
 val Organization = "fr.brouillard.gitbucket"
 val ProjectName = "gitbucket-h2-backup-plugin"
-val ProjectVersion = "1.5.0"
+val ProjectVersion = "1.5.1"
 
 lazy val h2_backup_plugin = (project in file(".")).enablePlugins(SbtTwirl)
 

@@ -16,7 +16,8 @@ class Plugin extends gitbucket.core.plugin.Plugin {
     new Version("1.2.0"),
     new Version("1.3.0"),
     new Version("1.4.0"),
-    new Version("1.5.0")
+    new Version("1.5.0"),
+    new Version("1.5.1")
   )
 
   override val systemSettingMenus: Seq[(Context) => Option[Link]] = Seq(
@@ -24,8 +25,6 @@ class Plugin extends gitbucket.core.plugin.Plugin {
   )
 
   override val controllers = Seq(
-    "/admin/h2backup" -> new H2BackupController()
-    , "/database/backup" -> new H2BackupController()
-    , "/api/v3/plugins/database/backup" -> new H2BackupController()
+    "/*" -> new H2BackupController()
   )
 }

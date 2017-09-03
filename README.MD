@@ -65,7 +65,7 @@ sbt clean package
 
 ## Release Notes
 
-### 1.5.0
+### 1.5.1
 - compatibility with gitbucket 4.16.0 and scala 2.12
 
 ### 1.4.0
