@@ -3,7 +3,6 @@ import io.github.gitbucket.solidbase.model.Version
 import gitbucket.core.controller.Context
 import gitbucket.core.plugin.Link
 
-
 class Plugin extends gitbucket.core.plugin.Plugin {
   override val pluginId: String = "h2-backup"
 
@@ -17,8 +16,8 @@ class Plugin extends gitbucket.core.plugin.Plugin {
     new Version("1.3.0"),
     new Version("1.4.0"),
     new Version("1.5.0"),
-    new Version("1.5.1")
-  )
+    new Version("1.5.1"),
+    new Version("1.6.0"))
 
   override val systemSettingMenus: Seq[(Context) => Option[Link]] = Seq(
     (ctx: Context) => Some(Link("h2-backup", "H2 Backup", "admin/h2backup"))
