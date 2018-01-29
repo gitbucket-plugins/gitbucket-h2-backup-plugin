@@ -1,8 +1,8 @@
-# gitbucket-h2-backup-plugin
+# gitbucket-h2-backup-plugin [![Gitter](https://img.shields.io/gitter/room/gitbucket/gitbucket.js.svg?style=flat-square)](https://gitter.im/gitbucket/gitbucket) [![Travis](https://img.shields.io/travis/gitbucket-plugins/gitbucket-h2-backup-plugin.svg?style=flat-square)](https://travis-ci.org/gitbucket-plugins/gitbucket-h2-backup-plugin)
 
-This plugin enhances [GitBucket](https://github.com/gitbucket/gitbucket) by offering a way to backup/dump the H2 database of GitBucket.
+This plugin enhances [GitBucket](https://github.com/gitbucket/gitbucket) by offering a way to backup/dump the entire H2 database of GitBucket.
 
-It originates from [pull request #845](takezoe/gitbucket#845) and can be used to address database backup described in [gitbucket backup documentation](https://github.com/takezoe/gitbucket/wiki/Backup)
+It originates from [pull request #845](takezoe/gitbucket#845) and can be used to address database backup described in [GitBucket Backup Documentation](https://github.com/gitbucket/gitbucket/wiki/Backup)
 
 ## Features
 
@@ -45,6 +45,7 @@ On success, you will receive a `HTTP 200` answer with a body containing `done: F
 
 Plugin version | GitBucket version
 :--------------|:-----------------
+1.6.x          | >= 4.21.y  |  
 1.5.x          | >= 4.16.y
 1.4.x          | >= 4.10.y
 1.3.x          | >= 4.3.y
@@ -60,33 +61,36 @@ sbt clean package
 
 ## Installation
 
-- copy gitbucket-h2-backup.jar into GITBUCKET_HOME/plugins
-- restart gitbucket
+- copy `gitbucket-h2-backup.jar` into GITBUCKET_HOME/plugins
+- restart GitBucket
 
 ## Release Notes
 
+### 1.6.0
+- compatibility with GitBucket 4.21.x
+
 ### 1.5.1
-- compatibility with gitbucket 4.16.0 and scala 2.12
+- compatibility with GitBucket 4.16.0 and Scala 2.12
 
 ### 1.4.0
 
-- compatibility with gitbucket 4.10, scala 2.12 [#20](https://github.com/gitbucket-plugins/gitbucket-h2-backup-plugin/issues/20)
+- compatibility with GitBucket 4.10, scala 2.12 [#20](https://github.com/gitbucket-plugins/gitbucket-h2-backup-plugin/issues/20)
 - allow to secure `database/backup` endpoint [#1](https://github.com/gitbucket-plugins/gitbucket-h2-backup-plugin/issues/1),[#19](https://github.com/gitbucket-plugins/gitbucket-h2-backup-plugin/issues/19)  
    see [Securing backup endpoint](#securing-backup-endpoint) paragraph
 
 ### 1.3.0
 
-- compatibility with gitbucket 4.3.0
-- fix version order in gitbucket Plugins panel
+- compatibility with GitBucket 4.3.0
+- fix version order in GitBucket Plugins panel
 - default backup file contains date with timestamp [#12](https://github.com/gitbucket-plugins/gitbucket-h2-backup-plugin/issues/12)
 
 ### 1.2.0
 
-- binary compatibility with gitbucket 4.x
+- binary compatibility with GitBucket 4.x
 
 ### 1.1
 
-- recompilation to ensure binary compatibility with gitbucket 3.11
+- recompilation to ensure binary compatibility with GitBucket 3.11
 
 ### 1.0
 
@@ -97,10 +101,10 @@ sbt clean package
 
 In version 1.4.0, it is possible to secure the `database/backup` endpoint:
 
-- launch gitbucket with System property _secure.backup_ set to true (for example `-Dsecure.backup=true` on the command line)
-- due to actual limitations of gitbucket & plugins security, once the previous setting is activated, 
-a call to `http://YOUR_GITBUCKET/database/backup` will be temporary redirected `http://YOUR_GITBUCKET/api/v3/plugins/database/backup`. 
+- launch GitBucket with System property _secure.backup_ set to true (for example `-Dsecure.backup=true` on the command line)
+- due to actual limitations of GitBucket & plugins security, once the previous setting is activated,
+a call to `http://YOUR_GITBUCKET/database/backup` will be temporary redirected `http://YOUR_GITBUCKET/api/v3/plugins/database/backup`.
 You have to follow this temporary redirection.
    - if you call the endpoint using _httpie_, use the `--follow` parameter
-- this secured endpoint route is TEMPORARY you should not call it directly. 
-If you do think that it will change in the future when gitbucket will support secured routes for plugins.  
+- this secured endpoint route is TEMPORARY you should not call it directly.
+If you do think that it will change in the future when GitBucket will support secured routes for plugins.  
