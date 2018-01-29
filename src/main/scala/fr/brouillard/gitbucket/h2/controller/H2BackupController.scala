@@ -13,7 +13,7 @@ import gitbucket.core.servlet.Database
 import org.scalatra.Ok
 import org.slf4j.LoggerFactory
 
-import io.github.gitbucket.scalatra.forms._
+import org.scalatra.forms._
 
 class H2BackupController extends ControllerBase with AdminAuthenticator {
   private val logger = LoggerFactory.getLogger(classOf[H2BackupController])
@@ -27,7 +27,7 @@ class H2BackupController extends ControllerBase with AdminAuthenticator {
   // private val defaultBackupFile:String = new File(GitBucketHome, "gitbucket-database-backup.zip").toString;
 
   def exportDatabase(exportFile: File): Unit = {
-    val destFile = if (exportFile.isAbsolute()) exportFile else new File(GitBucketHome+"/backup", exportFile.toString)
+    val destFile = if (exportFile.isAbsolute()) exportFile else new File(GitBucketHome + "/backup", exportFile.toString)
 
     val session = Database.getSession(request)
     val conn = session.conn
@@ -37,13 +37,13 @@ class H2BackupController extends ControllerBase with AdminAuthenticator {
     conn.prepareStatement("BACKUP TO '" + destFile + "'").execute()
   }
 
-  get("/admin/h2backup") (adminOnly {
+  get("/admin/h2backup")(adminOnly {
     html.export(flash.get("info"), flash.get("dest").orElse(Some(defaultBackupFileName())))
   })
 
   get("/api/v3/plugins/database/backup") {
     context.loginAccount match {
-      case Some(x) if(x.isAdmin) => doExport()
+      case Some(x) if (x.isAdmin) => doExport()
       case _ => org.scalatra.Unauthorized()
     }
   }
@@ -57,14 +57,14 @@ class H2BackupController extends ControllerBase with AdminAuthenticator {
   }
 
   private def doExport(): Unit = {
-    val filePath:String = params.getOrElse("dest", defaultBackupFileName())
+    val filePath: String = params.getOrElse("dest", defaultBackupFileName())
     exportDatabase(new File(filePath))
     Ok("done: " + filePath)
   }
 
   post("/database/backup", backupForm) { form: BackupForm =>
     exportDatabase(new File(form.destFile))
-    val msg:String = "H2 Database has been exported to '"+form.destFile+"'."
+    val msg: String = "H2 Database has been exported to '" + form.destFile + "'."
     flash += "info" -> msg
     flash += "dest" -> form.destFile
     redirect("/admin/h2backup")
@@ -72,6 +72,6 @@ class H2BackupController extends ControllerBase with AdminAuthenticator {
 
   private def defaultBackupFileName(): String = {
     val format = new java.text.SimpleDateFormat("yyyy-MM-dd_HH-mm")
-    "gitbucket-db-" + format.format(new Date())+ ".zip"
+    "gitbucket-db-" + format.format(new Date()) + ".zip"
   }
 }
