@@ -66,6 +66,9 @@ sbt clean package
 
 ## Release Notes
 
+### 1.7.0
+- Bump sbt-gitbucket-plugin to 1.3.0 to be hosted by the [plugin registry](https://plugins.gitbucket-community.org/).
+
 ### 1.6.0
 - compatibility with GitBucket 4.21.x
 
