@@ -45,7 +45,8 @@ On success, you will receive a `HTTP 200` answer with a body containing `done: F
 
 Plugin version | GitBucket version
 :--------------|:-----------------
-1.6.x          | >= 4.21.y  |  
+1.7.x          | >= 4.26.y
+1.6.x          | >= 4.21.y
 1.5.x          | >= 4.16.y
 1.4.x          | >= 4.10.y
 1.3.x          | >= 4.3.y
@@ -56,7 +57,7 @@ Plugin version | GitBucket version
 ## Build
 
 ```
-sbt clean package
+sbt clean assembly
 ```
 
 ## Installation
@@ -65,6 +66,9 @@ sbt clean package
 - restart GitBucket
 
 ## Release Notes
+
+### 1.7.0
+- Bump sbt-gitbucket-plugin to 1.3.0 to be hosted by the [plugin registry](https://plugins.gitbucket-community.org/)
 
 ### 1.6.0
 - compatibility with GitBucket 4.21.x
