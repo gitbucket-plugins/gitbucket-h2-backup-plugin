@@ -45,6 +45,7 @@ On success, you will receive a `HTTP 200` answer with a body containing `done: F
 
 Plugin version | GitBucket version
 :--------------|:-----------------
+1.8.x          | >= 4.32.y
 1.7.x          | >= 4.26.y
 1.6.x          | >= 4.21.y
 1.5.x          | >= 4.16.y
@@ -66,6 +67,9 @@ sbt clean assembly
 - restart GitBucket
 
 ## Release Notes
+
+### 1.8.0
+- compatibility with GitBucket 4.32.x and Scala 2.13
 
 ### 1.7.0
 - Bump sbt-gitbucket-plugin to 1.3.0 to be hosted by the [plugin registry](https://plugins.gitbucket-community.org/)
