@@ -45,6 +45,7 @@ On success, you will receive a `HTTP 200` answer with a body containing `done: F
 
 Plugin version | GitBucket version
 :--------------|:-----------------
+1.9.x          | >= 4.35.y
 1.8.x          | >= 4.32.y
 1.7.x          | >= 4.26.y
 1.6.x          | >= 4.21.y
