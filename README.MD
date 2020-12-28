@@ -69,6 +69,9 @@ sbt clean assembly
 
 ## Release Notes
 
+### 1.9.0
+- compatibility with GitBucket 4.35.x
+
 ### 1.8.0
 - compatibility with GitBucket 4.32.x and Scala 2.13
 
