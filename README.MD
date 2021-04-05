@@ -8,14 +8,14 @@ It originates from [pull request #845](takezoe/gitbucket#845) and can be used to
 
 ### H2 Backup
 
-This plugin allows to backup the underlying H2 database used by default by GitBucket.
+This plugin allows you to backup the underlying H2 database used by default by GitBucket.
 
 ## Usage
 
-The plugin provides 2 ways to backup the H2 database:
+The plugin provides two ways to backup the H2 database:
 
 - via an administration page and a backup button
-- via an HTTP call to http://YOUR_GITBUCKET/database/backup
+- via an HTTP call to `http://YOUR_GITBUCKET/api/v3/plugins/database/backup
 
 The default backup file points to `GITBUCKET_DATA/backup/gitbucket-db-YYYY-MM-DD-hhmm.zip` where:
 
@@ -34,12 +34,26 @@ The default backup file points to `GITBUCKET_DATA/backup/gitbucket-db-YYYY-MM-DD
 
 Using your preferred tool (curl, wget, ...) it is possible start a backup of the H2 database.
 
-The URL to call looks like `http://YOUR_GITBUCKET/database/backup`.
+The URL to call looks like `http://YOUR_GITBUCKET/api/v3/plugins/database/backup`
 
-You can pass an optional argument `dest` that references the destination file path where the backup will be done on the server. For example calling `http://YOUR_GITBUCKET/database/backup?dest=/var/backups/gitbucket.zip` will do an H2 backup of the gitbucket database into the file `/var/backups/gitbucket.zip`.
+You can pass an optional argument `dest` that references the destination file path where the backup will be done on the server.
+For example calling `http://YOUR_GITBUCKET/api/v3/plugins/database/backup?dest=/var/backups/gitbucket.zip` will do an H2 backup of the gitbucket database into the file `/var/backups/gitbucket.zip`.
 Since `1.3.0`, the _dest_ parameter can denote a relative file path, in this case the file will be created relatively to `GITBUCKET_DATA`.
 
 On success, you will receive a `HTTP 200` answer with a body containing `done: FULL_PATH_OF_BACKUP_FILE`.
+
+### HTTP API Authorization
+
+The api uses token authentication. To generate a token:
+
+1. Login to Gitbucket with an administrative account
+2. In the top-right corner, click the user menu
+3. Click `Account Settings`
+4. On the left, click `Applications`
+5. In `Generate new token` enter a description and click `Generate token`
+6. Add the token to your http call, such as with `curl`:
+
+    `curl -i -H 'Authorization: token your_token_value' http://YOUR_GITBUCKET/api/v3/plugins/database/backup`
 
 ## Compatibility
 
