@@ -2,17 +2,13 @@ package fr.brouillard.gitbucket.h2.controller
 
 import java.io.File
 import java.util.Date
-
 import fr.brouillard.gitbucket.h2._
-
 import gitbucket.core.controller.ControllerBase
 import gitbucket.core.util.AdminAuthenticator
 import gitbucket.core.util.Directory._
 import gitbucket.core.servlet.Database
-
-import org.scalatra.Ok
+import org.scalatra.{ActionResult, Ok}
 import org.slf4j.LoggerFactory
-
 import org.scalatra.forms._
 
 class H2BackupController extends ControllerBase with AdminAuthenticator {
@@ -42,26 +38,32 @@ class H2BackupController extends ControllerBase with AdminAuthenticator {
   })
 
   get("/api/v3/plugins/database/backup") {
+    doBackupMoved()
+  }
+
+  post("/api/v3/plugins/database/backup") {
     context.loginAccount match {
       case Some(x) if (x.isAdmin) => doExport()
       case _ => org.scalatra.Unauthorized()
     }
   }
 
+  // Legacy api that was insecure/open by default
   get("/database/backup") {
-    if (sys.props.get("secure.backup") exists (_ equalsIgnoreCase "true"))
-      org.scalatra.TemporaryRedirect("/api/v3/plugins/database/backup?dest=" + params.getOrElse("dest", defaultBackupFileName()))
-    else {
-      doExport()
-    }
+    doBackupMoved()
   }
 
-  private def doExport(): Unit = {
+  private def doBackupMoved(): ActionResult = {
+    org.scalatra.MethodNotAllowed("This has moved to POST /api/v3/plugins/database/backup")
+  }
+
+  private def doExport(): ActionResult = {
     val filePath: String = params.getOrElse("dest", defaultBackupFileName())
     exportDatabase(new File(filePath))
     Ok("done: " + filePath)
   }
 
+  // Responds to a form post from a web page
   post("/database/backup", backupForm) { form: BackupForm =>
     exportDatabase(new File(form.destFile))
     val msg: String = "H2 Database has been exported to '" + form.destFile + "'."

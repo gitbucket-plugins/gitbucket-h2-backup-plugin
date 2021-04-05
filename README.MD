@@ -83,6 +83,11 @@ sbt clean assembly
 
 ## Release Notes
 
+### Unreleased
+- remove backup api at GET /database/backup
+- change method from GET to POST on /api/v3/plugins/database/backup
+- backup endpoint is secure by default, and requires an api token for a user with admin rights
+
 ### 1.9.0
 - compatibility with GitBucket 4.35.x
 
@@ -102,7 +107,6 @@ sbt clean assembly
 
 - compatibility with GitBucket 4.10, scala 2.12 [#20](https://github.com/gitbucket-plugins/gitbucket-h2-backup-plugin/issues/20)
 - allow to secure `database/backup` endpoint [#1](https://github.com/gitbucket-plugins/gitbucket-h2-backup-plugin/issues/1),[#19](https://github.com/gitbucket-plugins/gitbucket-h2-backup-plugin/issues/19)  
-   see [Securing backup endpoint](#securing-backup-endpoint) paragraph
 
 ### 1.3.0
 
@@ -122,15 +126,3 @@ sbt clean assembly
 
 - introduce gitbucket-h2-backup-plugin
 - allows to backup h2 database via a live dump
-
-## Securing backup endpoint
-
-In version 1.4.0, it is possible to secure the `database/backup` endpoint:
-
-- launch GitBucket with System property _secure.backup_ set to true (for example `-Dsecure.backup=true` on the command line)
-- due to actual limitations of GitBucket & plugins security, once the previous setting is activated,
-a call to `http://YOUR_GITBUCKET/database/backup` will be temporary redirected `http://YOUR_GITBUCKET/api/v3/plugins/database/backup`.
-You have to follow this temporary redirection.
-   - if you call the endpoint using _httpie_, use the `--follow` parameter
-- this secured endpoint route is TEMPORARY you should not call it directly.
-If you do think that it will change in the future when GitBucket will support secured routes for plugins.  
