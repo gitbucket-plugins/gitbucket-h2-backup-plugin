@@ -40,7 +40,7 @@ You can pass an optional argument `dest` that references the destination file pa
 For example calling `http://YOUR_GITBUCKET/api/v3/plugins/database/backup?dest=/var/backups/gitbucket.zip` will do an H2 backup of the gitbucket database into the file `/var/backups/gitbucket.zip`.
 Since `1.3.0`, the _dest_ parameter can denote a relative file path, in this case the file will be created relatively to `GITBUCKET_DATA`.
 
-On success, you will receive a `HTTP 200` answer with a body containing `done: FULL_PATH_OF_BACKUP_FILE`.
+On success, you will receive a `HTTP 200` answer with a `text/plain` body containing `FULL_PATH_OF_BACKUP_FILE`.
 
 ### HTTP API Authorization
 
