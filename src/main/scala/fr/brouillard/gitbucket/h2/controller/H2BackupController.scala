@@ -23,7 +23,7 @@ class H2BackupController extends ControllerBase with AdminAuthenticator {
   // private val defaultBackupFile:String = new File(GitBucketHome, "gitbucket-database-backup.zip").toString;
 
   def exportDatabase(exportFile: File): Unit = {
-    val destFile = if (exportFile.isAbsolute()) exportFile else new File(GitBucketHome + "/backup", exportFile.toString)
+    val destFile = if (exportFile.isAbsolute) exportFile else new File(GitBucketHome + "/backup", exportFile.toString)
 
     val session = Database.getSession(request)
     val conn = session.conn
@@ -43,7 +43,10 @@ class H2BackupController extends ControllerBase with AdminAuthenticator {
 
   post("/api/v3/plugins/database/backup") {
     context.loginAccount match {
-      case Some(x) if (x.isAdmin) => doExport()
+      case Some(x) if x.isAdmin =>
+        val filePath: String = params.getOrElse("dest", defaultBackupFileName())
+        exportDatabase(new File(filePath))
+        Ok("done: " + filePath)
       case _ => org.scalatra.Unauthorized()
     }
   }
@@ -55,12 +58,6 @@ class H2BackupController extends ControllerBase with AdminAuthenticator {
 
   private def doBackupMoved(): ActionResult = {
     org.scalatra.MethodNotAllowed("This has moved to POST /api/v3/plugins/database/backup")
-  }
-
-  private def doExport(): ActionResult = {
-    val filePath: String = params.getOrElse("dest", defaultBackupFileName())
-    exportDatabase(new File(filePath))
-    Ok("done: " + filePath)
   }
 
   // Responds to a form post from a web page
