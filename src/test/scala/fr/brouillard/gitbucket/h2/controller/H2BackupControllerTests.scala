@@ -2,13 +2,18 @@ package fr.brouillard.gitbucket.h2.controller
 
 import gitbucket.core.model.Account
 import gitbucket.core.servlet.ApiAuthenticationFilter
+import org.apache.commons.io.FileSystemUtils
+import org.h2.Driver
+import org.h2.engine.Database
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers.{convertToAnyShouldWrapper, equal}
 import org.scalatra.{Ok, Params, ScalatraParams}
 import org.scalatra.test.scalatest.ScalatraFunSuite
 
 import java.io.File
-import java.util.Date
+import java.nio.file.{Files, Path, Paths}
+import java.util.{Date, Properties}
+import scala.util.Using
 
 class H2BackupControllerTests extends ScalatraFunSuite {
   addFilter(classOf[ApiAuthenticationFilter], path="/api/*")
@@ -57,6 +62,49 @@ class H2BackupControllerObjectTests extends AnyFunSuite {
       isGroupAccount = false,
       isRemoved = false,
       description = None)
+  }
+
+  private def h2Url(file: File): String = {
+    "jdbc:h2:file:" + file + ";DATABASE_TO_UPPER=false"
+  }
+
+  test("exports connected database with safe file name") {
+    exportsConnectedDatabase("backup.zip")
+  }
+
+  test("exports connected database with unsafe file name") {
+    exportsConnectedDatabase("data.zip' drop database xyx")
+  }
+
+  private def exportsConnectedDatabase(backupFileName: String): Unit = {
+    val tempDir = Files.createTempDirectory(classOf[H2BackupControllerObjectTests].getName + "-exports-connected-database")
+    try {
+      val requestedDbFile = new File(tempDir.toFile, "data")
+      // H2 can create several files; in this case, it will only create a data file and no lock files.
+      val createdDbFile = new File(tempDir.toFile, "data.mv.db")
+      val backup = new File(tempDir.toFile, backupFileName)
+
+      val driver = new Driver()
+      val conn = driver.connect(h2Url(requestedDbFile), new Properties());
+      try {
+        assert(createdDbFile.exists())
+
+        H2BackupController.exportConnectedDatabase(conn, backup)
+        try {
+          assert(backup.length() > 0)
+        }
+        finally {
+          assert(backup.delete())
+        }
+      }
+      finally {
+        conn.close()
+        assert(createdDbFile.delete())
+      }
+    }
+    finally {
+      assert(tempDir.toFile.delete())
+    }
   }
 
   test("generates default file name") {

@@ -3,7 +3,7 @@ package fr.brouillard.gitbucket.h2.controller
 import java.io.File
 import java.util.Date
 import fr.brouillard.gitbucket.h2._
-import fr.brouillard.gitbucket.h2.controller.H2BackupController.{defaultBackupFileName, doBackup}
+import fr.brouillard.gitbucket.h2.controller.H2BackupController.{defaultBackupFileName, doBackup, exportConnectedDatabase, logger}
 import gitbucket.core.controller.ControllerBase
 import gitbucket.core.model.Account
 import gitbucket.core.util.AdminAuthenticator
@@ -13,7 +13,13 @@ import org.scalatra.{ActionResult, Ok, Params}
 import org.slf4j.LoggerFactory
 import org.scalatra.forms._
 
+import java.sql.Connection
+import scala.util.Using
+
 object H2BackupController {
+
+  private val logger = LoggerFactory.getLogger(classOf[H2BackupController])
+
   def defaultBackupFileName(): String = {
     val format = new java.text.SimpleDateFormat("yyyy-MM-dd_HH-mm")
     "gitbucket-db-" + format.format(new Date()) + ".zip"
@@ -28,10 +34,23 @@ object H2BackupController {
       case _ => org.scalatra.Unauthorized()
     }
   }
+
+  def exportConnectedDatabase(conn: Connection, exportFile: File): Unit = {
+    val destFile = if (exportFile.isAbsolute) exportFile else new File(GitBucketHome + "/backup", exportFile.toString)
+
+    logger.info("Exporting database to {}", destFile)
+
+    Using.resource(conn.prepareStatement("BACKUP TO ?")){ statement =>
+      statement.setString(1, destFile.toString)
+      statement.execute()
+    }
+
+    logger.info("Exported {} bytes.", exportFile.length())
+  }
+
 }
 
 class H2BackupController extends ControllerBase with AdminAuthenticator {
-  private val logger = LoggerFactory.getLogger(classOf[H2BackupController])
 
   case class BackupForm(destFile: String)
 
@@ -39,17 +58,8 @@ class H2BackupController extends ControllerBase with AdminAuthenticator {
     "dest" -> trim(label("Destination", text(required)))
   )(BackupForm.apply)
 
-  // private val defaultBackupFile:String = new File(GitBucketHome, "gitbucket-database-backup.zip").toString;
-
   def exportDatabase(exportFile: File): Unit = {
-    val destFile = if (exportFile.isAbsolute) exportFile else new File(GitBucketHome + "/backup", exportFile.toString)
-
-    val session = Database.getSession(request)
-    val conn = session.conn
-
-    logger.info("exporting database to {}", destFile)
-
-    conn.prepareStatement("BACKUP TO '" + destFile + "'").execute()
+    exportConnectedDatabase(Database.getSession(request).conn, exportFile)
   }
 
   get("/admin/h2backup")(adminOnly {
