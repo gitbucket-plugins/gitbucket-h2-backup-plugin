@@ -15,11 +15,15 @@ import java.nio.file.{Files, Path, Paths}
 import java.util.{Date, Properties}
 import scala.util.Using
 
-class H2BackupControllerTests extends ScalatraFunSuite {
+class H2BackupControllerAdminTests extends ScalatraFunSuite {
   addFilter(classOf[ApiAuthenticationFilter], path="/api/*")
-  addFilter(classOf[H2BackupController], "/*")
+  addFilter(new H2BackupController() {
+    // Skip admin permission check
+    override protected def adminOnly(action: => Any) = { action }
+    override protected def adminOnly[T](action: T => Any) = (form: T) => { action(form) }
+  }, "/*")
 
-  test("get database backup api") {
+  test("get database backup api with admin credential") {
     get("/api/v3/plugins/database/backup") {
       status should equal (405)
       body should include ("This has moved")
@@ -30,6 +34,23 @@ class H2BackupControllerTests extends ScalatraFunSuite {
     get("/database/backup") {
       status should equal (405)
       body should include ("This has moved")
+    }
+  }
+}
+
+class H2BackupControllerTests extends ScalatraFunSuite {
+  addFilter(classOf[ApiAuthenticationFilter], path="/api/*")
+  addFilter(classOf[H2BackupController], "/*")
+
+  test("get database backup api without credential") {
+    get("/api/v3/plugins/database/backup") {
+      status should equal (401)
+    }
+  }
+
+  test("get database backup legacy") {
+    get("/database/backup") {
+      status should equal (401)
     }
   }
 
@@ -45,23 +66,6 @@ class H2BackupControllerObjectTests extends AnyFunSuite {
   private def assertDefaultFileName(name: String): Unit = {
     assert(name.startsWith("gitbucket-db"))
     assert(name.endsWith(".zip"))
-  }
-
-  private def buildAccount(isAdmin: Boolean) = {
-    Account(
-      userName = "a",
-      fullName = "b",
-      mailAddress = "c",
-      password = "d",
-      isAdmin = isAdmin,
-      url = None,
-      registeredDate = new Date(),
-      updatedDate = new Date(),
-      lastLoginDate = None,
-      image = None,
-      isGroupAccount = false,
-      isRemoved = false,
-      description = None)
   }
 
   private def h2Url(file: File): String = {
@@ -110,62 +114,4 @@ class H2BackupControllerObjectTests extends AnyFunSuite {
   test("generates default file name") {
     assertDefaultFileName(H2BackupController.defaultBackupFileName())
   }
-
-  test("post database backup with admin credentials is executed with default file name") {
-    val account = buildAccount(true)
-    val params: Params = new ScalatraParams(Map())
-
-    var executed = false;
-
-    val exportDatabase = (file: File) => {
-      assert(!executed)
-      assertDefaultFileName(file.getName)
-
-      executed = true
-    }
-
-    val action = H2BackupController.doBackup(exportDatabase, Some(account), params)
-
-    assert(executed)
-    assert(action.status == 200)
-
-    // Not JSON and not HTML
-    assert(action.headers.get("Content-Type").contains("text/plain"))
-  }
-
-  test("post database backup with admin credentials is executed with specific file name") {
-    val fileName = "foo.zip"
-    val account = buildAccount(true)
-    val params: Params = new ScalatraParams(Map("dest" -> Seq(fileName)))
-
-    var executed = false;
-
-    val exportDatabase = (file: File) => {
-      assert(!executed)
-      assert(file.getName.equals(fileName))
-
-      executed = true
-    }
-
-    val action = H2BackupController.doBackup(exportDatabase, Some(account), params)
-
-    assert(executed)
-    assert(action.status == 200)
-
-    // Not JSON and not HTML
-    assert(action.headers.get("Content-Type").contains("text/plain"))
-  }
-
-  test("post database backup with unprivileged credentials is unauthorized") {
-    val account = buildAccount(false)
-    val params: Params = new ScalatraParams(Map())
-
-    val exportDatabase = (file: File) => {
-      fail()
-    }
-
-    val action = H2BackupController.doBackup(exportDatabase, Some(account), params)
-    assert(action.status == 401)
-  }
-
 }
