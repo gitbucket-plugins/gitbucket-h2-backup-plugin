@@ -83,7 +83,7 @@ sbt clean assembly
 
 ## Release Notes
 
-### Unreleased
+### 1.9.1
 - remove backup api at GET /database/backup
 - change method from GET to POST on /api/v3/plugins/database/backup
 - backup endpoint is secure by default, and requires an api token for a user with admin rights

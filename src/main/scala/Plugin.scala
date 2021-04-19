@@ -20,7 +20,8 @@ class Plugin extends gitbucket.core.plugin.Plugin {
     new Version("1.6.0"),
     new Version("1.7.0"),
     new Version("1.8.0"),
-    new Version("1.9.0"))
+    new Version("1.9.0"),
+    new Version("1.9.1"))
 
   override val systemSettingMenus: Seq[(Context) => Option[Link]] = Seq(
     (ctx: Context) => Some(Link("h2-backup", "H2 Backup", "admin/h2backup"))
