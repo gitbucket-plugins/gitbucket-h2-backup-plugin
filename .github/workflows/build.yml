@@ -16,23 +16,18 @@ jobs:
           ~/.ivy2/cache
           ~/.sbt
           ~/.coursier
-        key: build-${{ env.cache-name }}-${{ hashFiles('build.sbt') }}    
+        key: build-${{ env.cache-name }}-${{ hashFiles('build.sbt') }}
     - name: Set up JDK
       uses: actions/setup-java@v2
       with:
         java-version: '8'
         distribution: 'adopt'
     - name: Run tests
-      run: |
-        # git clone https://github.com/gitbucket/gitbucket.git
-        # cd gitbucket
-        # sbt publishLocal
-        # cd ../
-        sbt test
+      run: sbt test
     - name: Assembly
       run: sbt assembly
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: gitbucket-h2-backup-plugin-java${{ matrix.java }}-${{ github.sha }}
+        name: gitbucket-h2-backup-plugin-${{ github.sha }}
         path: ./target/scala-2.13/*.jar
