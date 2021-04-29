@@ -15,7 +15,7 @@ This plugin allows you to backup the underlying H2 database used by default by G
 The plugin provides two ways to backup the H2 database:
 
 - via an administration page and a backup button
-- via an HTTP call to `http://YOUR_GITBUCKET/api/v3/plugins/database/backup
+- via an HTTP call to `http://YOUR_GITBUCKET/api/v3/plugins/database/backup`
 
 The default backup file points to `GITBUCKET_DATA/backup/gitbucket-db-YYYY-MM-DD-hhmm.zip` where:
 
@@ -40,7 +40,7 @@ You can pass an optional argument `dest` that references the destination file pa
 For example calling `http://YOUR_GITBUCKET/api/v3/plugins/database/backup?dest=/var/backups/gitbucket.zip` will do an H2 backup of the gitbucket database into the file `/var/backups/gitbucket.zip`.
 Since `1.3.0`, the _dest_ parameter can denote a relative file path, in this case the file will be created relatively to `GITBUCKET_DATA`.
 
-On success, you will receive a `HTTP 200` answer with a `text/plain` body containing `FULL_PATH_OF_BACKUP_FILE`.
+On success, you will receive a `HTTP 200` answer with a `text/plain` body containing the name of the backup file, without a path component. The file is in the `GITBUCKET_DATA/backup` folder.
 
 ### HTTP API Authorization
 
@@ -53,7 +53,7 @@ The api uses token authentication. To generate a token:
 5. In `Generate new token` enter a description and click `Generate token`
 6. Add the token to your http call, such as with `curl`:
 
-    `curl -i -H 'Authorization: token your_token_value' http://YOUR_GITBUCKET/api/v3/plugins/database/backup`
+    `curl --silent --show-error --fail -X POST -H 'Authorization: token your_token_value' http://YOUR_GITBUCKET/api/v3/plugins/database/backup`
 
 ## Compatibility
 
